@@ -12,6 +12,10 @@ Concur::Concur(id_t froma, id_t leadera)
 
 Concur::~Concur() {}
 
+std::unique_ptr<Message> Concur::copy() const {
+        return std::unique_ptr<Message>(new Concur(from, leader));
+}
+
 
 void Concur::render(std::string &buffer) const {
 }

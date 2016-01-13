@@ -13,6 +13,7 @@ namespace Chorus {
     public:
         Concur(id_t from, id_t leader);
         virtual ~Concur();
+        std::unique_ptr<Message> copy() const override;
 
     protected:
         void render(std::string &) const override;

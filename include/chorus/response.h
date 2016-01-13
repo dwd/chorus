@@ -12,6 +12,7 @@ namespace Chorus {
     public:
         Response(id_t from, id_t leader);
         virtual ~Response();
+        std::unique_ptr<Message> copy() const override;
 
     protected:
         void render(std::string &) const override;

@@ -30,11 +30,12 @@ namespace Chorus {
             REQUEST,
             RESPONSE
         };
-        Message(Type, id_t);
         virtual ~Message();
         static std::unique_ptr<Message> parse(std::string const & buffer);
         std::string render() const;
+        virtual std::unique_ptr<Message> copy() const = 0;
     protected:
+        Message(Type, id_t);
         virtual void render(std::string &) const = 0;
     public:
         Type type;

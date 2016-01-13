@@ -12,8 +12,8 @@
 
 using namespace Chorus;
 
-Replica::Replica(id_t replica_id, std::function<void(id_t, Message const &)> & fn)
-    : m_id(replica_id), m_election(new Election(*this)), m_leader(-1), m_sendfunc(fn) {
+Replica::Replica(id_t replica_id, std::function<void(id_t, Message const &)> fn)
+    : m_id(replica_id), m_leader(-1), m_sendfunc(fn), m_election(new Election(*this))  {
 }
 
 void Replica::leader(id_t leader, Election & election) {

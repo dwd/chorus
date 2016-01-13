@@ -12,6 +12,7 @@ namespace Chorus {
     public:
         Order(id_t from, size_t view, size_t seq, std::string const & hn, std::string const & d, Request const & request);
         virtual ~Order();
+        std::unique_ptr<Message> copy() const override;
 
     protected:
         void render(std::string &) const override;

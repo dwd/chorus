@@ -10,12 +10,12 @@
 #include <functional>
 #include <chorus/constants.h>
 #include <chorus/message.h>
-// #include <chorus/election.h>
+#include <chorus/election.h>
 
 namespace Chorus {
     class Replica {
     public:
-        Replica(id_t replica_id, std::function<void(id_t, Message const &)> & sendfunc);
+        Replica(id_t replica_id, std::function<void(id_t, Message const &)> sendfunc);
         id_t leader() const {
             return m_leader;
         }
@@ -25,7 +25,7 @@ namespace Chorus {
         void submit(Message const & msg);
 
         id_t id() const {
-            m_id;
+            return m_id;
         }
         void complain();
         void complain(Complain const &);
@@ -35,12 +35,13 @@ namespace Chorus {
         // General
         id_t m_id;
         id_t m_leader;
+        // Comms.
+        std::function<void(id_t, Message const &)> m_sendfunc;
         // Election
         std::unique_ptr<Election> m_election;
         std::set<id_t> m_complaints;
         std::set<id_t> m_concurs;
         bool m_concurred;
-        std::function<void(id_t, Message const &)> & m_sendfunc;
     };
 }
 

@@ -13,6 +13,7 @@ namespace Chorus {
     public:
         Vote(unsigned around, id_t afrom, id_t aproposed);
         virtual ~Vote();
+        std::unique_ptr<Message> copy() const override;
     protected:
         virtual void render(std::string &) const override;
 

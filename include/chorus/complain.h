@@ -12,6 +12,7 @@ namespace Chorus {
     public:
         Complain(id_t froma, id_t leadera);
         virtual ~Complain();
+        std::unique_ptr<Message> copy() const override;
 
     protected:
         void render(std::string &) const override;

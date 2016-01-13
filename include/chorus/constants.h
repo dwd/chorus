@@ -11,6 +11,7 @@ namespace Chorus {
     typedef long id_t;
     class Election;
     class Message;
+    class Replica;
     class Config {
     public:
         static size_t fail_tolerance;
