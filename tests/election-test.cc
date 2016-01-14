@@ -4,7 +4,7 @@
 
 #include <vector>
 #include <memory>
-
+#include <random>
 #include <iostream>
 
 #include <chorus/replica.h>
@@ -13,8 +13,11 @@ class TestHarness {
 public:
     std::vector<std::unique_ptr<Chorus::Replica>> m_replicas;
     std::vector<std::pair<id_t, std::unique_ptr<Chorus::Message>>> m_queue;
+    std::random_device rd;
+    std::mt19937 gen;
+    std::uniform_int_distribution<size_t> dis;
 
-    TestHarness(size_t fails) {
+    TestHarness(size_t fails) : rd{}, gen{rd()}, dis{0, ((3 * fails) + 1) * 37} {
         Chorus::Config::fail_tolerance = fails;
         Chorus::Config::total_replicas = (3 * fails) + 1;
         using std::placeholders::_1;
@@ -25,9 +28,11 @@ public:
     }
     bool tick_tock() {
         if (m_queue.empty()) return false;
-        std::cout << "Queue is " << m_queue.size() << " long., sending to " << m_queue[0].first << std::endl;
-        m_replicas[m_queue[0].first]->submit(*m_queue[0].second);
-        m_queue.erase(m_queue.begin());
+        size_t which = dis(gen) % m_queue.size();
+        std::cout << "Queue is " << m_queue.size() << " long, sending to " << m_queue[which].first << std::endl;
+        m_replicas[m_queue[which].first]->submit(*m_queue[which].second);
+        m_queue.erase(m_queue.begin() + which);
+        return true;
     }
     void send(Chorus::id_t id, Chorus::Message const & msg) {
         m_queue.emplace_back(std::make_pair(id,msg.copy()));
